@@ -42,7 +42,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "{app}\configs"
 
 [Files]
-Source: "C:\Users\123\Desktop\FreeJoyQt-v1.7.1b0-Windows\1111\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\123\Desktop\FreeJoyQt-v1.7.3b0-Windows\1111\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 

@@ -17,7 +17,7 @@ dev_config_t InitConfig (void)
 #endif
     dev_config_t init_config =
         {
-            .firmware_version = 0x1720,		// do not change
+            .firmware_version = 0x1730,		// do not change
             /*
         Name of device in devices dispatcher
     */

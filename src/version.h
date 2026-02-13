@@ -3,7 +3,7 @@
 
 #define MAJOR_VERSION 1
 #define MINOR_VERSION 7
-#define PATCH_VERSION 2
+#define PATCH_VERSION 3
 #define BUILD_VERSION 0
 
 #ifdef INNO_SETUP
