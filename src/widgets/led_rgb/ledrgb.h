@@ -35,7 +35,7 @@ private:
     //QScopedPointer<QListWidgetItem> m_item;
     QListWidgetItem *m_item;
 
-    static QIcon m_baseIcon;
+    static const QIcon m_baseIcon;
 };
 
 #endif // LEDRGB_H

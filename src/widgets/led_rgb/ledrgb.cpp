@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QIcon>
 
+const QIcon LedRGB::m_baseIcon = QIcon("://Images/rgbButtonOff.png");
+
 namespace {
     //! QPixmap gray-scale image (an alpha map) to colored QIcon
     QIcon pixmapToIcon(QPixmap pixmap, const QColor &color)
@@ -18,7 +20,6 @@ namespace {
         return QIcon(pixmap);
     }
 }
-QIcon LedRGB::m_baseIcon = QIcon("://Images/buttonLed.png");
 
 LedRGB::LedRGB(QObject *parent)
     : QObject{parent}
