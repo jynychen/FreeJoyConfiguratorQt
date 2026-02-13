@@ -23,6 +23,7 @@ LedConfig::LedConfig(QWidget *parent)
         LED *led = new LED(i, this);
         ui->layoutV_LED->addWidget(led);
         m_ledPtrList.append(led);
+        connect(led, &LED::ledToggled, this, &LedConfig::onLedToggled);
         led->hide();
     }
     for (int i = 0; i < MAX_AXIS_NUM; ++i) {
@@ -99,9 +100,20 @@ void LedConfig::ledRgbSelected(Pin pin, bool selected)
     m_ledsRgb->setEnabled(selected);
 }
 
+void LedConfig::onLedToggled(int ledNumber, bool state)
+{
+    if (ledNumber < 0 || ledNumber >= MAX_LEDS_NUM) return;
+    if (state) {
+        m_hostLedMask |= (1u << ledNumber);
+    } else {
+        m_hostLedMask &= ~(1u << ledNumber);
+    }
+
+    emit hostLedMaskChanged(m_hostLedMask);
+}
+
 void LedConfig::setLedsState()
 {
-    uint32_t hostLedMask = 0;
     for (int i = 0; i < MAX_LEDS_NUM; ++i)
     {
         if (i >= m_ledPtrList.size() || m_ledPtrList[i]->isHidden()) {
@@ -109,9 +121,8 @@ void LedConfig::setLedsState()
         }
 
         if (gEnv.pDeviceConfig->config.leds[i].input_num == SOURCE_HOST) {
-            // we don't have a way to get host controlled LED state here yet, 
-            // For now, let's just clear led state.
-            m_ledPtrList[i]->setLedState(false);
+            // Do not override host-controlled LEDs here; their state is managed via UI toggles and device echoes
+            continue;
         }
         else if (gEnv.pDeviceConfig->config.leds[i].input_num > -1) {
             if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {

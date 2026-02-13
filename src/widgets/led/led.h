@@ -27,11 +27,20 @@ public:
 
     void retranslateUi();
 
+    bool isHostControlled() const;
+
+signals:
+    void ledToggled(int ledNumber, bool state);
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
     Ui::LED *ui;
     int m_ledNumber;
 
-    bool m_currentState;
+    bool m_ledCurrentState;
+    QString m_defaultStyle;
 
     const deviceEnum_guiName_t m_ledList[2] = // порядок обязан быть как в common_types.h!!!!!!!!!!!
     {
