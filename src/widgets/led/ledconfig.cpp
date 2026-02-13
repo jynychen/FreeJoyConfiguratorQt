@@ -101,20 +101,29 @@ void LedConfig::ledRgbSelected(Pin pin, bool selected)
 
 void LedConfig::setLedsState()
 {
-    for (int i = 0; gEnv.pDeviceConfig->config.leds[i].input_num > -1; ++i) // можно улучшить
+    uint32_t hostLedMask = 0;
+    for (int i = 0; i < MAX_LEDS_NUM; ++i)
     {
-        if (i >= m_ledPtrList.size()) {
+        if (i >= m_ledPtrList.size() || m_ledPtrList[i]->isHidden()) {
             break;
         }
-        if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {
-            // logical buttons state
-            int index = gEnv.pDeviceConfig->config.leds[i].input_num / 8;
-            int bit = gEnv.pDeviceConfig->config.leds[i].input_num - index * 8;
 
-            if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07)))) {
-                m_ledPtrList[i]->setLedState(true);
-            } else if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07))) == false) {
-                m_ledPtrList[i]->setLedState(false);
+        if (gEnv.pDeviceConfig->config.leds[i].input_num == SOURCE_HOST) {
+            // we don't have a way to get host controlled LED state here yet, 
+            // For now, let's just clear led state.
+            m_ledPtrList[i]->setLedState(false);
+        }
+        else if (gEnv.pDeviceConfig->config.leds[i].input_num > -1) {
+            if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {
+                // logical buttons state
+                int index = gEnv.pDeviceConfig->config.leds[i].input_num / 8;
+                int bit = gEnv.pDeviceConfig->config.leds[i].input_num - index * 8;
+
+                if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07)))) {
+                    m_ledPtrList[i]->setLedState(true);
+                } else if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07))) == false) {
+                    m_ledPtrList[i]->setLedState(false);
+                }
             }
         }
     }

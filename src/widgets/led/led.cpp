@@ -16,6 +16,10 @@ LED::LED(int ledNumber, QWidget *parent)
     for (uint i = 0; i < std::size(m_TimerList); ++i) {
         ui->comboBox_Timer->addItem(m_TimerList[i].guiName);
     }
+
+    connect(ui->checkBox_HostControlled, &QCheckBox::toggled, this, [=](bool checked){
+        ui->spinBox_InputNumber->setEnabled(!checked);
+    });
 }
 
 LED::~LED()
@@ -51,17 +55,24 @@ void LED::setLedState(bool state)
 void LED::readFromConfig()
 {
     led_config_t *led = &gEnv.pDeviceConfig->config.leds[m_ledNumber];
-    ui->spinBox_InputNumber->setValue(led->input_num + 1);
+    if (gEnv.pDeviceConfig->config.leds[m_ledNumber].input_num == SOURCE_HOST) {
+        ui->checkBox_HostControlled->setChecked(true);
+        ui->spinBox_InputNumber->setEnabled(false);
+    } else {
+        ui->checkBox_HostControlled->setChecked(false);
+        ui->spinBox_InputNumber->setEnabled(true);
+        ui->spinBox_InputNumber->setValue(led->input_num + 1);
+    }
     ui->comboBox_Function->setCurrentIndex(led->type);
-
     ui->comboBox_Timer->setCurrentIndex(led->timer + 1); // +1 because first element in m_TimerList = -1
 }
 
 void LED::writeToConfig()
 {
     led_config_t *led = &gEnv.pDeviceConfig->config.leds[m_ledNumber];
-    led->input_num = ui->spinBox_InputNumber->value() - 1;
+    led->input_num = (ui->checkBox_HostControlled->isChecked())
+        ? SOURCE_HOST
+        : ui->spinBox_InputNumber->value() - 1;
     led->type = ui->comboBox_Function->currentIndex();
-
     led->timer = ui->comboBox_Timer->currentIndex() - 1; // -1 because first element in m_TimerList = -1
 }

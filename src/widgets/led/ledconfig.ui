@@ -373,7 +373,7 @@
        <number>6</number>
       </property>
       <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1,3,3">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,3,1,3,3">
         <property name="spacing">
          <number>30</number>
         </property>
@@ -393,6 +393,16 @@
          <widget class="QLabel" name="text_number">
           <property name="text">
            <string>№</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="text_number">
+          <property name="text">
+           <string>Source</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
