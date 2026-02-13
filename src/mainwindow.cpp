@@ -86,7 +86,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->layoutV_tabLedConfig->addWidget(m_ledConfig);
     qDebug()<<"led config load time ="<< timer.restart() << "ms";
     // host-controlled LED mask -> HID device
-    connect(m_ledConfig, &LedConfig::hostLedMaskChanged, m_hidDeviceWorker, &HidDevice::sendLedState);
+    // Use DirectConnection because HidDevice worker thread has no event loop
+    connect(m_ledConfig, &LedConfig::hostLedMaskChanged, m_hidDeviceWorker, &HidDevice::sendLedState, Qt::DirectConnection);
     // add advanced settings widget
     m_advSettings = new AdvancedSettings(this);
     ui->layoutV_tabAdvSettings->addWidget(m_advSettings);
