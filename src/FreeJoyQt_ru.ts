@@ -1584,7 +1584,7 @@
     </message>
     <message>
         <location filename="widgets/led/led.ui" line="69"/>
-        <source>Host Controlled</source>
+        <source>External</source>
         <translation>Внешнее (Host)</translation>
     </message>
     <message>

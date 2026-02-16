@@ -1454,8 +1454,8 @@
     </message>
     <message>
         <location filename="widgets/led/led.ui" line="69"/>
-        <source>Host Controlled</source>
-        <translation>由主机控制</translation>
+        <source>External</source>
+        <translation>外部控制</translation>
     </message>
     <message>
         <location filename="widgets/led/led.h" line="38"/>

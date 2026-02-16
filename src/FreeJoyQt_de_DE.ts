@@ -1314,8 +1314,8 @@
     </message>
     <message>
         <location filename="widgets/led/led.ui" line="69"/>
-        <source>Host Controlled</source>
-        <translation>Vom Host gesteuert</translation>
+        <source>External</source>
+        <translation>Extern</translation>
     </message>
     <message>
         <location filename="widgets/led/led.h" line="38"/>
