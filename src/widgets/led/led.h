@@ -20,6 +20,8 @@ public:
 
     int currentButtonSelected() const;
 
+    void updateLabelStyle(bool checked);
+
     void setLedState(bool state);
 
     void readFromConfig();
