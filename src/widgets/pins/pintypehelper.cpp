@@ -28,6 +28,7 @@ PinTypeHelper::PinTypeHelper(QWidget *parent) :
     ui->label_pwmLed->setProperty("pinType", LED_PWM);
     ui->label_monoLed->setProperty("pinType", LED_SINGLE);
     ui->label_fastEncoder->setProperty("pinType", FAST_ENCODER);
+    ui->label_uart->setProperty("pinType", UART_TX);
 }
 
 PinTypeHelper::~PinTypeHelper()

@@ -295,6 +295,11 @@ private:
         {I2C2_SDA},
         {},
         {I2C_SCL}, {QColor(90, 155, 140)}},
+
+        {UART_TX,        tr("UART TX"),
+        {PA_9},
+        {},
+        {}, {QColor(90, 155, 140)}},
     };
 };
 
