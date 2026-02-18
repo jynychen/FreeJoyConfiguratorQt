@@ -1126,17 +1126,17 @@
 <context>
     <name>ConfigToFile</name>
     <message>
-        <location filename="configtofile.cpp" line="232"/>
+        <location filename="configtofile.cpp" line="235"/>
         <source>Firmware version in config file doesnt match configurator version. Check settings before write config.</source>
         <translation>配置文件中的固件版本与配置程序版本不匹配。请在写入配置之前检查设置。</translation>
     </message>
     <message>
-        <location filename="configtofile.cpp" line="233"/>
+        <location filename="configtofile.cpp" line="236"/>
         <source>Pins B8, B9 reset! In this version I2C moved from pins B8, B9 to B10, B11. Check it!</source>
         <translation>引脚B8、B9已重新设置!在此版本中,I2C从引脚B8、B9移动到B10、B11。请重新检查引脚!</translation>
     </message>
     <message>
-        <location filename="configtofile.cpp" line="234"/>
+        <location filename="configtofile.cpp" line="237"/>
         <source>Firmware version!</source>
         <translation>固件版本！</translation>
     </message>
@@ -1589,6 +1589,29 @@
     </message>
 </context>
 <context>
+    <name>LedFunction</name>
+    <message>
+        <location filename="widgets/led_rgb/ledfunction.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">子菜单</translation>
+    </message>
+    <message>
+        <location filename="widgets/led_rgb/ledfunction.ui" line="32"/>
+        <source>Logical button state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/led_rgb/ledfunction.ui" line="50"/>
+        <source>Invert state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/led_rgb/ledfunction.ui" line="57"/>
+        <source>Logical button №</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LedRGBConfig</name>
     <message>
         <location filename="widgets/led_rgb/ledrgbconfig.ui" line="14"/>
@@ -2016,6 +2039,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="widgets/pins/pincombobox.h" line="299"/>
+        <source>UART TX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Button Gnd</source>
         <translation type="vanished">按钮 负极</translation>
     </message>
@@ -2120,41 +2148,46 @@
     </message>
     <message>
         <location filename="widgets/pins/pincombobox.h" line="254"/>
+        <source>LED PL9823</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/pins/pincombobox.h" line="259"/>
         <source>Axis Analog</source>
         <translation>模拟轴</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="259"/>
+        <location filename="widgets/pins/pincombobox.h" line="264"/>
         <source>Fast Encoder</source>
         <translation>高速编码器</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="264"/>
+        <location filename="widgets/pins/pincombobox.h" line="269"/>
         <source>SPI SCK</source>
         <translation>SPI SCK引脚</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="269"/>
+        <location filename="widgets/pins/pincombobox.h" line="274"/>
         <source>SPI MOSI</source>
         <translation>SPI MOSI引脚</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="274"/>
+        <location filename="widgets/pins/pincombobox.h" line="279"/>
         <source>SPI MISO</source>
         <translation>SPI MISO引脚</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="279"/>
+        <location filename="widgets/pins/pincombobox.h" line="284"/>
         <source>TLE5011 GEN</source>
         <translation>TLE5011 GEN引脚</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="284"/>
+        <location filename="widgets/pins/pincombobox.h" line="289"/>
         <source>I2C SCL</source>
         <translation>I2C SCL引脚</translation>
     </message>
     <message>
-        <location filename="widgets/pins/pincombobox.h" line="289"/>
+        <location filename="widgets/pins/pincombobox.h" line="294"/>
         <source>I2C SDA</source>
         <translation>I2C SDA引脚</translation>
     </message>
@@ -2237,42 +2270,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="118"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;WS2812b&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; addressable LEDs are supported. It is possible to customize the color of each LED, use some effects, or control the LEDs via &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;SimHub&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;. Connect the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;DIN&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin of the LED to the selected &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#ff55ff;&quot;&gt;WS2812b LED&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin on the controller board. Settings in the &amp;quot;LED/PWM&amp;quot; tab.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/rgb.png&quot; width=&quot;500&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="widgets/pins/pintypehelper.ui" line="121"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;FJ sends joystick data via &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#5a9b8c;&quot;&gt;UART TX &lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;every 10 ms, baud rate 115200. You can connect, for example, the ESP32 C3 to UART, which can be used as a Bluetooth joystick.&lt;/span&gt;&lt;/p&gt;&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; border-collapse:collapse;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot; &gt;&lt;thead&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt; font-weight:700;&quot;&gt;Name&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt; font-weight:700;&quot;&gt;Length bytes&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt; font-weight:700;&quot;&gt;Desc&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;Header&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;ASCII &apos;H&apos;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;Separator&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;ASCII &apos;-&apos;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;Message code&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;message num 0-255&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;Axis data&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;2 bytes for axis&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;Buttons data&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;one bit = one button&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;CRC16&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:3; border-top:1px; border-right:1px; border-bottom:1px; border-left:1px; border-top-color:#555555; border-right-color:#555555; border-bottom-color:#555555; border-left-color:#555555; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid;&quot;&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:11pt;&quot;&gt;crc16 polynomial 0x8005&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="124"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RGB LEDs&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <location filename="widgets/pins/pintypehelper.ui" line="127"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;UART&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="131"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="134"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;WS2812b&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; and &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;PL9823&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; addressable LEDs are supported. It is possible to customize the color of each LED, use some effects, or control the LEDs via &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;SimHub&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;. Connect the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;DIN&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin of the LED to the selected &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#ff55ff;&quot;&gt;WS2812b/PL9823 LED&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin on the controller board. Settings in the &amp;quot;LED/PWM&amp;quot; tab.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/rgb.png&quot; width=&quot;500&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;WS2812b&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; addressable LEDs are supported. It is possible to customize the color of each LED, use some effects, or control the LEDs via &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;SimHub&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;. Connect the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;DIN&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin of the LED to the selected &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#ff55ff;&quot;&gt;WS2812b LED&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; pin on the controller board. Settings in the &amp;quot;LED/PWM&amp;quot; tab.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/rgb.png&quot; width=&quot;500&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/pins/pintypehelper.ui" line="140"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ARGB LEDs&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; style=&quot;float: right;&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RGB LEDs&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/pins/pintypehelper.ui" line="147"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Single-color LEDs with brightness control in the &amp;quot;LED/PWM&amp;quot; tab, no more than 20mA. Connect the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#d37a0d;&quot;&gt;+&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; of the LED to the &amp;quot;&lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#c85a46;&quot;&gt;PWM LED&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot; pin. The value of the current-limiting resistance is recommended to be calculated individually for the LEDs used.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/pwmLed.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="137"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="153"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;PWM LEDs&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="144"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="160"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Single-color LEDs, not more than 20mA, linked to the pressed buttons in the &amp;quot;LED/PWM&amp;quot; tab. Both direct &amp;quot;&lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#c89646;&quot;&gt;LED Single&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot; and LED matrix &amp;quot;&lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#c88246;&quot;&gt;LED Row/Column&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot; connection are supported. The value of the current-limiting resistance is recommended to be calculated individually for the LEDs used.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/monoLed.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="150"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="166"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mono LEDs&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="157"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="173"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;It is possible to connect one incremental encoder with a high frequency, it can only be used as an axis source. Pins &amp;quot;&lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:700; color:#379619;&quot;&gt;Fast encoder&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;:/Images/fastEncoder.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/pins/pintypehelper.ui" line="163"/>
+        <location filename="widgets/pins/pintypehelper.ui" line="179"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fast Encoder&lt;img src=&quot;:/Images/info_icon.png&quot; width=&quot;10&quot; align=&quot;right&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
