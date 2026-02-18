@@ -65,7 +65,7 @@ private:
     const QColor m_kPointerColor = QColor(1, 119, 215);
     const uint m_kMaxPointValue = 255;
     const int m_kOffset = 10;
-    const int m_kRangeBetween = 13; // минимальное расстояние между ближайшими указателями
+    const int m_kRangeBetween = 4; // минимальное расстояние между ближайшими указателями
     const int m_kLabelWidth = 20;
     const int m_kMinHeight = 40; //45
 
