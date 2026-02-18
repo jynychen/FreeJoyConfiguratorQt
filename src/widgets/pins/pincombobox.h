@@ -7,7 +7,7 @@
 #include "global.h"
 
 #define PINS_COUNT 30
-#define PIN_TYPE_COUNT 30
+#define PIN_TYPE_COUNT 31
 enum // разделить и вынести отдельно?                 // все структуры в global.h?
 {
   ANALOG_IN = 100,
@@ -246,10 +246,15 @@ private:
         {},
         {}, {QColor(200, 90, 70)}},
 
-        {LED_RGB,        tr("LED WS2812b"),
+        {LED_RGB_WS2812B,        tr("LED WS2812b"),
         {PA_10},
         {},
         {}, {QColor(255, 85, 255)}},
+
+        {LED_RGB_PL9823,        tr("LED PL9823"),
+        {PA_10},
+        {},
+        {}, {QColor(230, 65, 230)}},
 
         {AXIS_ANALOG,    tr("Axis Analog"),
         {ANALOG_IN},

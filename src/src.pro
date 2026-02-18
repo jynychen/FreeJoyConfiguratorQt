@@ -56,6 +56,7 @@ SOURCES += \
     widgets/color/colorvalueslider.cpp \
     widgets/color/colorwheel.cpp \
     widgets/infolabel.cpp \
+    widgets/led_rgb/ledfunction.cpp \
     widgets/led_rgb/ledrgb.cpp \
     widgets/led_rgb/ledrgbconfig.cpp \
     widgets/pins/pintypehelper.cpp \
@@ -109,6 +110,7 @@ HEADERS += \
     widgets/color/colorvalueslider.h \
     widgets/color/colorwheel.h \
     widgets/infolabel.h \
+    widgets/led_rgb/ledfunction.h \
     widgets/led_rgb/ledrgb.h \
     widgets/led_rgb/ledrgbconfig.h \
     widgets/pins/pintypehelper.h \
@@ -154,6 +156,7 @@ FORMS += \
     widgets/buttons/buttonlogical.ui \
     widgets/buttons/buttonphysical.ui \
     widgets/color/colorpicker.ui \
+    widgets/led_rgb/ledfunction.ui \
     widgets/led_rgb/ledrgbconfig.ui \
     widgets/pins/currentconfig.ui \
     widgets/debugwindow.ui \

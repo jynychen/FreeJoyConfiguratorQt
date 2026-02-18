@@ -24,7 +24,7 @@ PinTypeHelper::PinTypeHelper(QWidget *parent) :
     ui->label_shiftReg->setProperty("pinType", SHIFT_REG_LATCH);
     ui->label_spi->setProperty("pinType", MCP3201_CS);
     ui->label_i2c->setProperty("pinType", I2C_SDA);
-    ui->label_rgbLed->setProperty("pinType", LED_RGB);
+    ui->label_rgbLed->setProperty("pinType", LED_RGB_WS2812B);
     ui->label_pwmLed->setProperty("pinType", LED_PWM);
     ui->label_monoLed->setProperty("pinType", LED_SINGLE);
     ui->label_fastEncoder->setProperty("pinType", FAST_ENCODER);

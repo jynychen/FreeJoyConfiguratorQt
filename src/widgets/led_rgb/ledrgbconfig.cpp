@@ -1,27 +1,12 @@
 #include "ledrgbconfig.h"
 #include "ui_ledrgbconfig.h"
+#include <QMenu>
+#include <QWidgetAction>
+#include "ledfunction.h"
 #include "common_types.h"
 #include "deviceconfig.h"
 #include "global.h"
 
-#include <QPainter>
-#include <QIcon>
-namespace {     // много копий этой функции, сделать отдельно хидер
-    //! QPixmap gray-scale image (an alpha map) to colored QIcon
-    QIcon pixmapToIcon(QPixmap pixmap, const QColor &color)
-    {
-        // initialize painter to draw on a pixmap and set composition mode
-        QPainter painter(&pixmap);
-        painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);//CompositionMode_SourceIn
-        // set color
-        painter.setBrush(color);
-        painter.setPen(color);
-        // paint rect
-        painter.drawRect(pixmap.rect());
-        // here is our new colored icon
-        return QIcon(pixmap);
-    }
-}
 
 LedRGBConfig::LedRGBConfig(QWidget *parent) :
     QWidget(parent),
@@ -34,6 +19,9 @@ LedRGBConfig::LedRGBConfig(QWidget *parent) :
 
     connect(ui->listWidget_leds, &QListWidget::itemClicked, this, &LedRGBConfig::itemClicked);
     connect(&m_colorPicker, &ColorPicker::currentColorChanged, this, &LedRGBConfig::setColorToSelectedItems);
+
+    ui->listWidget_leds->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listWidget_leds, &QListWidget::customContextMenuRequested, this, &LedRGBConfig::contextMenu);
 }
 
 LedRGBConfig::~LedRGBConfig()
@@ -41,9 +29,65 @@ LedRGBConfig::~LedRGBConfig()
     delete ui;
 }
 
+
 void LedRGBConfig::retranslateUi()
 {
     ui->retranslateUi(this);
+}
+
+
+void LedRGBConfig::contextMenu(const QPoint &pos)
+{
+    QListWidgetItem *item = ui->listWidget_leds->itemAt(pos);
+    if (!item) return;
+
+    QPoint point = ui->listWidget_leds->mapToGlobal(pos);
+    QMenu menu;
+
+    LedRGB *led = nullptr;
+    for (int i = 0; i < m_rgbPtrList.size(); ++i) {
+        if (m_rgbPtrList[i]->item() == item) {
+            led = m_rgbPtrList[i];
+        }
+    }
+
+    QWidgetAction* action = new QWidgetAction(&menu);
+    LedFunction* ledFunc = new LedFunction(&menu);
+    action->setDefaultWidget(ledFunc);
+    menu.addAction(action);
+
+    if (led) {
+        ledFunc->setInverted(led->buttonInverted());
+        ledFunc->setLogButton(led->buttonNumber());
+    }
+    //QAction* rightClickItem = menu.exec(point);
+    menu.exec(point);
+
+    if (led) {
+        led->setButtonInverted(ledFunc->Inverted());
+        led->setButtonNumber(ledFunc->logButtonNum());
+    }
+}
+
+
+void LedRGBConfig::updateLedsButtonState()
+{
+    for (int i = 0; i < m_rgbPtrList.size(); ++i) // можно улучшить
+    {
+        if (m_rgbPtrList[i]->buttonNumber() == gEnv.pDeviceConfig->config.rgb_leds[i].input_num + 1) {
+            // logical buttons state
+            int index = gEnv.pDeviceConfig->config.rgb_leds[i].input_num / 8;
+            int bit = gEnv.pDeviceConfig->config.rgb_leds[i].input_num - index * 8;
+
+            if (i >= 0 && i < m_rgbPtrList.size()) {
+                if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07)))) {
+                    m_rgbPtrList[i]->setButtonState(true);
+                } else if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07))) == false) {
+                    m_rgbPtrList[i]->setButtonState(false);
+                }
+            }
+        }
+    }
 }
 
 
@@ -58,10 +102,11 @@ void LedRGBConfig::itemClicked(QListWidgetItem *item)
 
 void LedRGBConfig::setColorToSelectedItems(const QColor &color)
 {
-    QIcon icon(pixmapToIcon(QPixmap("://Images/buttonLed.png"), color));
+    //QIcon icon(pixmapToIcon(QPixmap("://Images/buttonLed.png"), color));
     for (int i = 0; i < m_rgbPtrList.size(); ++i) {
         if (m_rgbPtrList[i]->isSelected()) {
-            m_rgbPtrList[i]->setIcon(icon, color);
+            //m_rgbPtrList[i]->setIcon(icon, color);
+            m_rgbPtrList[i]->setColor(color);
         }
     }
 }
@@ -70,6 +115,7 @@ void LedRGBConfig::setColorToSelectedItems(const QColor &color)
 void LedRGBConfig::on_radioButton_staticColor_clicked(bool checked)
 {
     if (checked) {
+        ui->spinBox_ledsCount->setMaximum(NUM_RGB_LEDS);
         m_colorPicker.setEnabled(true);
         ui->listWidget_leds->setEnabled(true);
         ui->spinBox_delay->setEnabled(false);
@@ -82,6 +128,7 @@ void LedRGBConfig::on_radioButton_staticColor_clicked(bool checked)
 void LedRGBConfig::on_radioButton_rainbow_clicked(bool checked)
 {
     if (checked) {
+        ui->spinBox_ledsCount->setMaximum(NUM_RGB_LEDS);
         m_colorPicker.setEnabled(false);
         ui->listWidget_leds->setEnabled(false);
         ui->spinBox_delay->setEnabled(true);
@@ -94,6 +141,7 @@ void LedRGBConfig::on_radioButton_rainbow_clicked(bool checked)
 void LedRGBConfig::on_radioButton_simHub_clicked(bool checked)
 {
     if (checked) {
+        ui->spinBox_ledsCount->setMaximum(NUM_RGB_LEDS_SH);
         m_colorPicker.setEnabled(false);
         ui->listWidget_leds->setEnabled(false);
         ui->spinBox_delay->setEnabled(false);
@@ -106,6 +154,7 @@ void LedRGBConfig::on_radioButton_simHub_clicked(bool checked)
 void LedRGBConfig::on_radioButton_flow_clicked(bool checked)
 {
     if (checked) {
+        ui->spinBox_ledsCount->setMaximum(NUM_RGB_LEDS);
         m_colorPicker.setEnabled(true);
         ui->listWidget_leds->setEnabled(true);
         ui->spinBox_delay->setEnabled(true);
@@ -126,9 +175,9 @@ void LedRGBConfig::on_spinBox_ledsCount_valueChanged(int value)
         for (int i = curCount; i < value; ++i) {
             LedRGB *led = new LedRGB(this);
             led->setText(QString::number(i+1));
-            int red = devc->rgb_leds[i].r;
-            int green = devc->rgb_leds[i].g;
-            int blue = devc->rgb_leds[i].b;
+            int red = devc->rgb_leds[i].color.r;
+            int green = devc->rgb_leds[i].color.g;
+            int blue = devc->rgb_leds[i].color.b;
             led->setColor(QColor(red, green, blue));
             m_rgbPtrList.append(led);
             ui->listWidget_leds->addItem(led->item());
@@ -148,12 +197,15 @@ void LedRGBConfig::readFromConfig()
     dev_config_t *devc = &gEnv.pDeviceConfig->config;
 
     on_spinBox_ledsCount_valueChanged(devc->rgb_count); // change
-    // ИЗМЕНИТЬ ЭТУ ХУЙНЮ !!!!
+    // ИЗМЕНИТЬ ЭТУ ХУЙНЮ !!!! // забыл почему это написал
     for (int i = 0; i < devc->rgb_count; ++i) {
-        int red = devc->rgb_leds[i].r;
-        int green = devc->rgb_leds[i].g;
-        int blue = devc->rgb_leds[i].b;
+        int red = devc->rgb_leds[i].color.r;
+        int green = devc->rgb_leds[i].color.g;
+        int blue = devc->rgb_leds[i].color.b;
         m_rgbPtrList[i]->setColor(QColor(red, green, blue));
+        // button
+        m_rgbPtrList[i]->setButtonNumber(devc->rgb_leds[i].input_num + 1);
+        m_rgbPtrList[i]->setButtonInverted(devc->rgb_leds[i].is_inverted);
     }
 
     switch(devc->rgb_effect) {
@@ -187,9 +239,12 @@ void LedRGBConfig::writeToConfig()
     dev_config_t *devc = &gEnv.pDeviceConfig->config;
     for (int i = 0; i < m_rgbPtrList.size(); ++i) {
         QColor color = m_rgbPtrList[i]->color();
-        devc->rgb_leds[i].r = color.red();
-        devc->rgb_leds[i].g = color.green();
-        devc->rgb_leds[i].b = color.blue();
+        devc->rgb_leds[i].color.r = color.red();
+        devc->rgb_leds[i].color.g = color.green();
+        devc->rgb_leds[i].color.b = color.blue();
+        // button
+        devc->rgb_leds[i].input_num = m_rgbPtrList[i]->buttonNumber() -1;
+        devc->rgb_leds[i].is_inverted = m_rgbPtrList[i]->buttonInverted();
     }
 
     if (ui->radioButton_staticColor->isChecked()) {

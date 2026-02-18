@@ -101,11 +101,8 @@ void LedConfig::ledRgbSelected(Pin pin, bool selected)
 
 void LedConfig::setLedsState()
 {
-    for (int i = 0; gEnv.pDeviceConfig->config.leds[i].input_num > -1; ++i) // можно улучшить
+    for (int i = 0; i < m_ledPtrList.size(); ++i) // можно улучшить
     {
-        if (i >= m_ledPtrList.size()) {
-            break;
-        }
         if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {
             // logical buttons state
             int index = gEnv.pDeviceConfig->config.leds[i].input_num / 8;
@@ -118,6 +115,8 @@ void LedConfig::setLedsState()
             }
         }
     }
+
+    m_ledsRgb->updateLedsButtonState();
 }
 
 void LedConfig::setEnabledTimers(bool enabled)

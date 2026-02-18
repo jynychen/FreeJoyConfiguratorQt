@@ -212,9 +212,12 @@ void ConfigToFile::loadDeviceConfigFromFile(QWidget *parent, const QString &file
     devC.rgb_delay_ms = uint16_t(deviceSettings.value("Delay", devC.rgb_delay_ms).toInt());
 
     for (int i = 0; i < NUM_RGB_LEDS; ++i) {
-        devC.rgb_leds[i].r = uint8_t(deviceSettings.value("Red_" + QString::number(i), devC.rgb_leds[i].r).toInt());
-        devC.rgb_leds[i].g = uint8_t(deviceSettings.value("Green_" + QString::number(i), devC.rgb_leds[i].g).toInt());
-        devC.rgb_leds[i].b = uint8_t(deviceSettings.value("Blue_" + QString::number(i), devC.rgb_leds[i].b).toInt());
+        devC.rgb_leds[i].color.r = uint8_t(deviceSettings.value("Red_" + QString::number(i), devC.rgb_leds[i].color.r).toInt());
+        devC.rgb_leds[i].color.g = uint8_t(deviceSettings.value("Green_" + QString::number(i), devC.rgb_leds[i].color.g).toInt());
+        devC.rgb_leds[i].color.b = uint8_t(deviceSettings.value("Blue_" + QString::number(i), devC.rgb_leds[i].color.b).toInt());
+
+        devC.rgb_leds[i].input_num = int8_t(deviceSettings.value("InputNum_" + QString::number(i), devC.rgb_leds[i].input_num).toInt());
+        devC.rgb_leds[i].is_inverted = deviceSettings.value("Inverted_" + QString::number(i), devC.rgb_leds[i].is_inverted).toBool();
     }
     deviceSettings.endGroup();
 
@@ -445,9 +448,12 @@ void ConfigToFile::saveDeviceConfigToFile(const QString &fileName, dev_config_t 
     deviceSettings.setValue("Delay", devC.rgb_delay_ms);
 
     for (int i = 0; i < NUM_RGB_LEDS; ++i) {
-        deviceSettings.setValue("Red_" + QString::number(i), devC.rgb_leds[i].r);
-        deviceSettings.setValue("Green_" + QString::number(i), devC.rgb_leds[i].g);
-        deviceSettings.setValue("Blue_" + QString::number(i), devC.rgb_leds[i].b);
+        deviceSettings.setValue("Red_" + QString::number(i), devC.rgb_leds[i].color.r);
+        deviceSettings.setValue("Green_" + QString::number(i), devC.rgb_leds[i].color.g);
+        deviceSettings.setValue("Blue_" + QString::number(i), devC.rgb_leds[i].color.b);
+
+        deviceSettings.setValue("InputNum_" + QString::number(i), devC.rgb_leds[i].input_num);
+        deviceSettings.setValue("Inverted_" + QString::number(i), devC.rgb_leds[i].is_inverted);
     }
     deviceSettings.endGroup();
     qDebug()<<"SaveDeviceConfigToFile() finished";
