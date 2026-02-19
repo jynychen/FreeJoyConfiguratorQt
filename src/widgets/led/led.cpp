@@ -11,10 +11,12 @@ LED::LED(int ledNumber, QWidget *parent)
 {
     ui->setupUi(this);
     m_ledNumber = ledNumber;
-    ui->label_LEDNumber->setNum(ledNumber + 1);
+    ui->label_LEDNumber->setText(QString::number(ledNumber + 1));
+    ui->pushButton_LEDNumber->setText(QString::number(ledNumber + 1));
 
-    // cache default style per-instance
-   m_defaultStyle = ui->label_LEDNumber->styleSheet();
+    // cache default styles
+    m_defaultStyle = ui->pushButton_LEDNumber->styleSheet();
+    m_defaultLabelStyle = ui->label_LEDNumber->styleSheet();
 
     for (uint i = 0; i < std::size(m_ledList); ++i) {
         ui->comboBox_Function->addItem(m_ledList[i].guiName);
@@ -24,10 +26,14 @@ LED::LED(int ledNumber, QWidget *parent)
         ui->comboBox_Timer->addItem(m_TimerList[i].guiName);
     }
 
-    // allow clicking the label when host controlled
-    ui->label_LEDNumber->installEventFilter(this);
+    connect(ui->pushButton_LEDNumber, &QPushButton::clicked, this, [=](){
+        if (isHostControlled()) {
+            setLedState(!m_ledCurrentState);
+            emit ledToggled(m_ledNumber, m_ledCurrentState);
+        }
+    });
 
-    connect(ui->checkBox_HostControlled, &QCheckBox::toggled, this, &LED::updateLabelStyle);
+    connect(ui->checkBox_HostControlled, &QCheckBox::toggled, this, &LED::updateButtonStyle);
     connect(ui->checkBox_HostControlled, &QCheckBox::toggled, this, [=](bool checked){
         ui->spinBox_InputNumber->setEnabled(!checked);
     });
@@ -48,27 +54,36 @@ int LED::currentButtonSelected() const
     return ui->spinBox_InputNumber->value() - 1;
 }
 
-void LED::updateLabelStyle(bool checked) {
-    QString style = m_defaultStyle;
+void LED::updateButtonStyle(bool checked) {
     if (checked) {
-        style += QStringLiteral("border: 1px solid gray; border-radius: 4px;");
-        if (m_ledCurrentState) {
-            style += QStringLiteral("background-color: rgb(0, 128, 0);");
-        } else {
-            style += QStringLiteral("background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f6f7fa, stop:1 #dadbde);");
-        }
-    } else {
+        ui->stackedWidget_LED->setCurrentWidget(ui->page_Button);
+        QString style = m_defaultStyle;
         if (m_ledCurrentState) {
             style += QStringLiteral("background-color: rgb(0, 128, 0);");
         }
-    }
-    ui->label_LEDNumber->setStyleSheet(style);
-    ui->label_LEDNumber->setCursor(checked ? Qt::PointingHandCursor : Qt::ArrowCursor);
+        ui->pushButton_LEDNumber->setStyleSheet(style);
+        ui->pushButton_LEDNumber->setCheckable(true);
+        ui->pushButton_LEDNumber->setChecked(m_ledCurrentState);
+        ui->pushButton_LEDNumber->setCursor(Qt::PointingHandCursor);
 
-    // Force the style to refresh
-    ui->label_LEDNumber->style()->unpolish(ui->label_LEDNumber);
-    ui->label_LEDNumber->style()->polish(ui->label_LEDNumber);
-    ui->label_LEDNumber->update();
+        // Force the style to refresh
+        ui->pushButton_LEDNumber->style()->unpolish(ui->pushButton_LEDNumber);
+        ui->pushButton_LEDNumber->style()->polish(ui->pushButton_LEDNumber);
+        ui->pushButton_LEDNumber->update();
+    } else {
+        ui->stackedWidget_LED->setCurrentWidget(ui->page_Label);
+        QString style = m_defaultLabelStyle;
+        if (m_ledCurrentState) {
+            style += QStringLiteral("background-color: rgb(0, 128, 0);");
+        }
+        ui->label_LEDNumber->setStyleSheet(style);
+        ui->label_LEDNumber->setCursor(Qt::ArrowCursor);
+
+        // Force the style to refresh
+        ui->label_LEDNumber->style()->unpolish(ui->label_LEDNumber);
+        ui->label_LEDNumber->style()->polish(ui->label_LEDNumber);
+        ui->label_LEDNumber->update();
+    }
 };
 
 void LED::setLedState(bool state)
@@ -76,7 +91,7 @@ void LED::setLedState(bool state)
     if (state != m_ledCurrentState) {
         m_ledCurrentState = state;
         bool checked = ui->checkBox_HostControlled->isChecked();
-        updateLabelStyle(checked);
+        updateButtonStyle(checked);
     }
 }
 
@@ -110,18 +125,10 @@ bool LED::isHostControlled() const
     return ui->checkBox_HostControlled->isChecked();
 }
 
-bool LED::eventFilter(QObject *watched, QEvent *event)
+void LED::changeEvent(QEvent *event)
 {
-    if (watched == ui->label_LEDNumber && isHostControlled()) {
-        if (event->type() == QEvent::MouseButtonRelease) {
-            auto *me = static_cast<QMouseEvent *>(event);
-            if (me->button() == Qt::LeftButton) {
-                // toggle and emit
-                setLedState(!m_ledCurrentState);
-                emit ledToggled(m_ledNumber, m_ledCurrentState);
-                return true;
-            }
-        }
+    if (event->type() == QEvent::PaletteChange) {
+        updateButtonStyle(isHostControlled());
     }
-    return QWidget::eventFilter(watched, event);
+    QWidget::changeEvent(event);
 }

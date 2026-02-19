@@ -20,7 +20,7 @@ public:
 
     int currentButtonSelected() const;
 
-    void updateLabelStyle(bool checked);
+    void updateButtonStyle(bool checked);
 
     void setLedState(bool state);
 
@@ -35,7 +35,7 @@ signals:
     void ledToggled(int ledNumber, bool state);
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    void changeEvent(QEvent *event) override;
 
 private:
     Ui::LED *ui;
@@ -43,6 +43,7 @@ private:
 
     bool m_ledCurrentState;
     QString m_defaultStyle;
+    QString m_defaultLabelStyle;
 
     const deviceEnum_guiName_t m_ledList[2] = // порядок обязан быть как в common_types.h!!!!!!!!!!!
     {
