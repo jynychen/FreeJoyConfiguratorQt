@@ -7,7 +7,7 @@
 #include "global.h"
 
 #define PINS_COUNT 30
-#define PIN_TYPE_COUNT 31
+#define PIN_TYPE_COUNT 32
 enum // разделить и вынести отдельно?                 // все структуры в global.h?
 {
   ANALOG_IN = 100,
