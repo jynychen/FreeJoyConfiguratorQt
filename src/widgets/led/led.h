@@ -42,7 +42,6 @@ private:
     int m_ledNumber;
 
     bool m_ledCurrentState;
-    QString m_defaultStyle;
 
     const deviceEnum_guiName_t m_ledList[2] = // порядок обязан быть как в common_types.h!!!!!!!!!!!
     {

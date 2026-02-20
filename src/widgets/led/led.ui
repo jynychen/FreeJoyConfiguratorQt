@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
+    <width>495</width>
     <height>44</height>
    </rect>
   </property>
@@ -32,14 +32,14 @@
    <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::Shape::Box</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Shadow::Sunken</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,3,1,3,3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,3,1,3,3">
       <property name="spacing">
-       <number>30</number>
+       <number>10</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -55,13 +55,37 @@
       </property>
       <item>
        <widget class="QPushButton" name="pushButton_LEDNumber">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton:checked {
+    background-color: green;
+    color: palette(button-text);
+}
+QPushButton:disabled {
+    color: palette(button-text);
+}</string>
+        </property>
         <property name="text">
          <string notr="true">1</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignmentFlag::AlignHCenter">
        <widget class="QCheckBox" name="checkBox_HostControlled">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>External</string>
         </property>
@@ -69,11 +93,17 @@
       </item>
       <item>
        <widget class="AltSpinBox" name="spinBox_InputNumber">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
         <property name="correctionMode">
-         <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+         <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
         </property>
         <property name="maximum">
          <number>128</number>
@@ -93,14 +123,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CenteredCBox</class>
-   <extends>QComboBox</extends>
-   <header>centered_cbox.h</header>
-  </customwidget>
-  <customwidget>
    <class>AltSpinBox</class>
    <extends>QSpinBox</extends>
    <header>altspinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CenteredCBox</class>
+   <extends>QComboBox</extends>
+   <header>centered_cbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1585,7 +1585,7 @@
     <message>
         <location filename="widgets/led/led.ui" line="69"/>
         <source>External</source>
-        <translation>Внешнее (Host)</translation>
+        <translation>Внешнее</translation>
     </message>
     <message>
         <location filename="widgets/led/led.h" line="38"/>

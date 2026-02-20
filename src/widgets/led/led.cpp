@@ -13,9 +13,6 @@ LED::LED(int ledNumber, QWidget *parent)
     m_ledNumber = ledNumber;
     ui->pushButton_LEDNumber->setText(QString::number(ledNumber + 1));
 
-    // cache default style
-    m_defaultStyle = ui->pushButton_LEDNumber->styleSheet();
-
     for (uint i = 0; i < std::size(m_ledList); ++i) {
         ui->comboBox_Function->addItem(m_ledList[i].guiName);
     }
@@ -53,22 +50,10 @@ int LED::currentButtonSelected() const
 }
 
 void LED::updateButtonStyle(bool checked) {
-    QString style = m_defaultStyle;
+    ui->pushButton_LEDNumber->setChecked(m_ledCurrentState);
 
-    if (m_ledCurrentState) {
-        style += QStringLiteral("background-color: rgb(0, 128, 0);");
-    }
-
-    ui->pushButton_LEDNumber->setStyleSheet(style);
     ui->pushButton_LEDNumber->setFlat(!checked);
-
-    ui->pushButton_LEDNumber->setAttribute(Qt::WA_TransparentForMouseEvents, !checked);
-    ui->pushButton_LEDNumber->setCursor(checked ? Qt::PointingHandCursor : Qt::ArrowCursor);
-
-    // Force the style to refresh
-    ui->pushButton_LEDNumber->style()->unpolish(ui->pushButton_LEDNumber);
-    ui->pushButton_LEDNumber->style()->polish(ui->pushButton_LEDNumber);
-    ui->pushButton_LEDNumber->update();
+    ui->pushButton_LEDNumber->setEnabled(checked);
 };
 
 void LED::setLedState(bool state)
