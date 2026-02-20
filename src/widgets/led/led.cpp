@@ -11,12 +11,10 @@ LED::LED(int ledNumber, QWidget *parent)
 {
     ui->setupUi(this);
     m_ledNumber = ledNumber;
-    ui->label_LEDNumber->setText(QString::number(ledNumber + 1));
     ui->pushButton_LEDNumber->setText(QString::number(ledNumber + 1));
 
-    // cache default styles
+    // cache default style
     m_defaultStyle = ui->pushButton_LEDNumber->styleSheet();
-    m_defaultLabelStyle = ui->label_LEDNumber->styleSheet();
 
     for (uint i = 0; i < std::size(m_ledList); ++i) {
         ui->comboBox_Function->addItem(m_ledList[i].guiName);
@@ -55,35 +53,22 @@ int LED::currentButtonSelected() const
 }
 
 void LED::updateButtonStyle(bool checked) {
-    if (checked) {
-        ui->stackedWidget_LED->setCurrentWidget(ui->page_Button);
-        QString style = m_defaultStyle;
-        if (m_ledCurrentState) {
-            style += QStringLiteral("background-color: rgb(0, 128, 0);");
-        }
-        ui->pushButton_LEDNumber->setStyleSheet(style);
-        ui->pushButton_LEDNumber->setCheckable(true);
-        ui->pushButton_LEDNumber->setChecked(m_ledCurrentState);
-        ui->pushButton_LEDNumber->setCursor(Qt::PointingHandCursor);
+    QString style = m_defaultStyle;
 
-        // Force the style to refresh
-        ui->pushButton_LEDNumber->style()->unpolish(ui->pushButton_LEDNumber);
-        ui->pushButton_LEDNumber->style()->polish(ui->pushButton_LEDNumber);
-        ui->pushButton_LEDNumber->update();
-    } else {
-        ui->stackedWidget_LED->setCurrentWidget(ui->page_Label);
-        QString style = m_defaultLabelStyle;
-        if (m_ledCurrentState) {
-            style += QStringLiteral("background-color: rgb(0, 128, 0);");
-        }
-        ui->label_LEDNumber->setStyleSheet(style);
-        ui->label_LEDNumber->setCursor(Qt::ArrowCursor);
-
-        // Force the style to refresh
-        ui->label_LEDNumber->style()->unpolish(ui->label_LEDNumber);
-        ui->label_LEDNumber->style()->polish(ui->label_LEDNumber);
-        ui->label_LEDNumber->update();
+    if (m_ledCurrentState) {
+        style += QStringLiteral("background-color: rgb(0, 128, 0);");
     }
+
+    ui->pushButton_LEDNumber->setStyleSheet(style);
+    ui->pushButton_LEDNumber->setFlat(!checked);
+
+    ui->pushButton_LEDNumber->setAttribute(Qt::WA_TransparentForMouseEvents, !checked);
+    ui->pushButton_LEDNumber->setCursor(checked ? Qt::PointingHandCursor : Qt::ArrowCursor);
+
+    // Force the style to refresh
+    ui->pushButton_LEDNumber->style()->unpolish(ui->pushButton_LEDNumber);
+    ui->pushButton_LEDNumber->style()->polish(ui->pushButton_LEDNumber);
+    ui->pushButton_LEDNumber->update();
 };
 
 void LED::setLedState(bool state)

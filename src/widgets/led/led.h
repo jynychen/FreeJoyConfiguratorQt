@@ -43,7 +43,6 @@ private:
 
     bool m_ledCurrentState;
     QString m_defaultStyle;
-    QString m_defaultLabelStyle;
 
     const deviceEnum_guiName_t m_ledList[2] = // порядок обязан быть как в common_types.h!!!!!!!!!!!
     {
