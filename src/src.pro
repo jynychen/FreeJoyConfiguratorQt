@@ -31,10 +31,13 @@ INCLUDEPATH +="widgets" \
     "widgets/encoders" \
     "widgets/led" \
     "widgets/pins" \
-    "widgets/shift-reg"
+    "widgets/shift-reg" \
+    "widgets/color" \
+    "widgets/led_rgb"
 
 SOURCES += \
     mainwindow_style.cpp \
+    widgets/altspinbox.cpp \
     widgets/axes-curves/axescurvesbutton.cpp \
     widgets/axes-curves/axescurvesprofiles.cpp \
     widgets/centered_cbox.cpp \
@@ -48,7 +51,15 @@ SOURCES += \
     mousewheelguard.cpp \
     reportconverter.cpp \
     stm_main.c \
+    widgets/color/colorcells.cpp \
+    widgets/color/colorpicker.cpp \
+    widgets/color/colorvalueslider.cpp \
+    widgets/color/colorwheel.cpp \
     widgets/infolabel.cpp \
+    widgets/led_rgb/ledfunction.cpp \
+    widgets/led_rgb/ledrgb.cpp \
+    widgets/led_rgb/ledrgbconfig.cpp \
+    widgets/pins/pintypehelper.cpp \
     widgets/selectfolder.cpp \
     widgets/switchbutton.cpp \
     widgets/adv-settings/advancedsettings.cpp \
@@ -77,6 +88,7 @@ SOURCES += \
     widgets/shift-reg/shiftregistersconfig.cpp
 
 HEADERS += \
+    widgets/altspinbox.h \
     widgets/axes-curves/axescurvesbutton.h \
     widgets/axes-curves/axescurvesprofiles.h \
     widgets/centered_cbox.h \
@@ -93,7 +105,15 @@ HEADERS += \
     mousewheelguard.h \
     reportconverter.h \
     stm_main.h \
+    widgets/color/colorcells.h \
+    widgets/color/colorpicker.h \
+    widgets/color/colorvalueslider.h \
+    widgets/color/colorwheel.h \
     widgets/infolabel.h \
+    widgets/led_rgb/ledfunction.h \
+    widgets/led_rgb/ledrgb.h \
+    widgets/led_rgb/ledrgbconfig.h \
+    widgets/pins/pintypehelper.h \
     widgets/selectfolder.h \
     widgets/switchbutton.h \
     version.h \
@@ -135,6 +155,9 @@ FORMS += \
     widgets/buttons/buttonconfig.ui \
     widgets/buttons/buttonlogical.ui \
     widgets/buttons/buttonphysical.ui \
+    widgets/color/colorpicker.ui \
+    widgets/led_rgb/ledfunction.ui \
+    widgets/led_rgb/ledrgbconfig.ui \
     widgets/pins/currentconfig.ui \
     widgets/debugwindow.ui \
     widgets/encoders/encoders.ui \
@@ -146,6 +169,7 @@ FORMS += \
     widgets/pins/pinconfig.ui \
     widgets/pins/pinsbluepill.ui \
     widgets/pins/pinscontrlite.ui \
+    widgets/pins/pintypehelper.ui \
     widgets/selectfolder.ui \
     widgets/shift-reg/shiftregisters.ui \
     widgets/shift-reg/shiftregistersconfig.ui

@@ -85,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_ledConfig = new LedConfig(this);
     ui->layoutV_tabLedConfig->addWidget(m_ledConfig);
     qDebug()<<"led config load time ="<< timer.restart() << "ms";
+    // host-controlled LED mask -> HID device
+    // Use DirectConnection because HidDevice worker thread has no event loop
+    connect(m_ledConfig, &LedConfig::hostLedMaskChanged, m_hidDeviceWorker, &HidDevice::sendLedState, Qt::DirectConnection);
     // add advanced settings widget
     m_advSettings = new AdvancedSettings(this);
     ui->layoutV_tabAdvSettings->addWidget(m_advSettings);
@@ -131,6 +134,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_pinConfig, &PinConfig::totalButtonsValueChanged, m_buttonConfig, &ButtonConfig::setUiOnOff);
     // LEDs changed
     connect(m_pinConfig, &PinConfig::totalLEDsValueChanged, m_ledConfig, &LedConfig::spawnLeds);
+    connect(m_pinConfig, &PinConfig::ledPwmSelected, m_ledConfig, &LedConfig::ledPwmSelected);
+    connect(m_pinConfig, &PinConfig::ledRgbSelected, m_ledConfig, &LedConfig::ledRgbSelected);
     // encoder changed
     connect(m_buttonConfig, &ButtonConfig::encoderInputChanged, m_encoderConfig, &EncodersConfig::encoderInputChanged);
     // fast encoder
@@ -191,7 +196,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // set theme
     gEnv.pAppSettings->beginGroup("StyleSettings");
-    QString style = gEnv.pAppSettings->value("StyleSheet", "default").toString();
+    QString style = gEnv.pAppSettings->value("StyleSheet", "dark").toString();
     gEnv.pAppSettings->endGroup();
     if (style == "dark") {
         themeChanged(true);
@@ -461,6 +466,7 @@ void MainWindow::finalInitialization()
 void MainWindow::curCfgFileChanged(const QString &fileName)
 {
     QString filePath = m_cfgDirPath + '/' + fileName + ".cfg";
+    gEnv.pDeviceConfig->resetConfig();
     ConfigToFile::loadDeviceConfigFromFile(this, filePath, gEnv.pDeviceConfig->config);
     UiReadFromConfig();
 }
@@ -749,6 +755,7 @@ void MainWindow::on_pushButton_LoadFromFile_clicked()
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open Config"), m_cfgDirPath + "/", tr("Config Files (*.cfg)"));
 
+    gEnv.pDeviceConfig->resetConfig();
     ConfigToFile::loadDeviceConfigFromFile(this, fileName, gEnv.pDeviceConfig->config);
     UiReadFromConfig();
     qDebug()<<"done";

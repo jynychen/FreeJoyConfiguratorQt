@@ -82,6 +82,8 @@ void ConfigToFile::loadDeviceConfigFromFile(QWidget *parent, const QString &file
     devC.button_timer3_ms = uint16_t(deviceSettings.value("Timer3", devC.button_timer3_ms).toInt());
     devC.button_debounce_ms = uint16_t(deviceSettings.value("Debounce", devC.button_debounce_ms).toInt());
     devC.encoder_press_time_ms = uint8_t(deviceSettings.value("EncoderPress", devC.encoder_press_time_ms).toInt());
+    devC.button_polling_interval_ticks = uint16_t(deviceSettings.value("ButtonsPolling", devC.button_polling_interval_ticks).toInt());
+    devC.encoder_polling_interval_ticks = uint8_t(deviceSettings.value("EncodersPolling", devC.encoder_polling_interval_ticks).toInt());
     deviceSettings.endGroup();
 
     // load Buttons config from file
@@ -186,13 +188,38 @@ void ConfigToFile::loadDeviceConfigFromFile(QWidget *parent, const QString &file
     devC.led_pwm_config[3].axis_num = uint8_t(deviceSettings.value("PinPB4_AxisNum", devC.led_pwm_config[3].axis_num).toInt());
     deviceSettings.endGroup();
 
+    // Mono LEDs
+    deviceSettings.beginGroup("LedsMonoConfig");
+    for (uint i = 0; i < std::size(devC.led_timer_ms); ++i) {
+        devC.led_timer_ms[i] = uint16_t(deviceSettings.value("Timer_" + QString::number(i +1), devC.led_timer_ms[i]).toInt());
+    }
+    deviceSettings.endGroup();
+
     for (int i = 0; i < MAX_LEDS_NUM; ++i) {
         deviceSettings.beginGroup("LedsConfig_" + QString::number(i));
 
         devC.leds[i].input_num = int8_t(deviceSettings.value("InputNum", devC.leds[i].input_num).toInt());
         devC.leds[i].type = uint8_t(deviceSettings.value("LedType", devC.leds[i].type).toInt());
+        devC.leds[i].timer = uint8_t(deviceSettings.value("Timer", devC.leds[i].timer).toInt());
         deviceSettings.endGroup();
     }
+
+    // RGB LEDs
+    deviceSettings.beginGroup("LedsRGBConfig");
+    devC.rgb_effect = uint8_t(deviceSettings.value("Effect", devC.rgb_effect).toInt());
+    devC.rgb_count = uint8_t(deviceSettings.value("Count", devC.rgb_count).toInt());
+    devC.rgb_brightness = uint8_t(deviceSettings.value("Brightness", devC.rgb_brightness).toInt());
+    devC.rgb_delay_ms = uint16_t(deviceSettings.value("Delay", devC.rgb_delay_ms).toInt());
+
+    for (int i = 0; i < NUM_RGB_LEDS; ++i) {
+        devC.rgb_leds[i].color.r = uint8_t(deviceSettings.value("Red_" + QString::number(i), devC.rgb_leds[i].color.r).toInt());
+        devC.rgb_leds[i].color.g = uint8_t(deviceSettings.value("Green_" + QString::number(i), devC.rgb_leds[i].color.g).toInt());
+        devC.rgb_leds[i].color.b = uint8_t(deviceSettings.value("Blue_" + QString::number(i), devC.rgb_leds[i].color.b).toInt());
+
+        devC.rgb_leds[i].input_num = int8_t(deviceSettings.value("InputNum_" + QString::number(i), devC.rgb_leds[i].input_num).toInt());
+        devC.rgb_leds[i].is_inverted = deviceSettings.value("Inverted_" + QString::number(i), devC.rgb_leds[i].is_inverted).toBool();
+    }
+    deviceSettings.endGroup();
 
     oldConfigHandler(parent, devC);
 }
@@ -291,6 +318,8 @@ void ConfigToFile::saveDeviceConfigToFile(const QString &fileName, dev_config_t 
     deviceSettings.setValue("Timer3", devC.button_timer3_ms);
     deviceSettings.setValue("Debounce", devC.button_debounce_ms);
     deviceSettings.setValue("EncoderPress", devC.encoder_press_time_ms);
+    deviceSettings.setValue("ButtonsPolling", devC.button_polling_interval_ticks);
+    deviceSettings.setValue("EncodersPolling", devC.encoder_polling_interval_ticks);
     deviceSettings.endGroup();
 
     // save Buttons config to file
@@ -395,12 +424,37 @@ void ConfigToFile::saveDeviceConfigToFile(const QString &fileName, dev_config_t 
     deviceSettings.setValue("PinPB4_AxisNum", devC.led_pwm_config[3].axis_num);
     deviceSettings.endGroup();
 
+    // Mono LEDs
+    deviceSettings.beginGroup("LedsMonoConfig");
+    for (uint i = 0; i < std::size(devC.led_timer_ms); ++i) {
+        deviceSettings.setValue("Timer_" + QString::number(i +1), devC.led_timer_ms[i]);
+    }
+    deviceSettings.endGroup();
+
     for (int i = 0; i < MAX_LEDS_NUM; ++i) {
         deviceSettings.beginGroup("LedsConfig_" + QString::number(i));
 
         deviceSettings.setValue("InputNum", devC.leds[i].input_num);
         deviceSettings.setValue("LedType", devC.leds[i].type);
+        deviceSettings.setValue("Timer", devC.leds[i].timer);
         deviceSettings.endGroup();
     }
+
+    // RGB LEDs
+    deviceSettings.beginGroup("LedsRGBConfig");
+    deviceSettings.setValue("Effect", devC.rgb_effect);
+    deviceSettings.setValue("Count", devC.rgb_count);
+    deviceSettings.setValue("Brightness", devC.rgb_brightness);
+    deviceSettings.setValue("Delay", devC.rgb_delay_ms);
+
+    for (int i = 0; i < NUM_RGB_LEDS; ++i) {
+        deviceSettings.setValue("Red_" + QString::number(i), devC.rgb_leds[i].color.r);
+        deviceSettings.setValue("Green_" + QString::number(i), devC.rgb_leds[i].color.g);
+        deviceSettings.setValue("Blue_" + QString::number(i), devC.rgb_leds[i].color.b);
+
+        deviceSettings.setValue("InputNum_" + QString::number(i), devC.rgb_leds[i].input_num);
+        deviceSettings.setValue("Inverted_" + QString::number(i), devC.rgb_leds[i].is_inverted);
+    }
+    deviceSettings.endGroup();
     qDebug()<<"SaveDeviceConfigToFile() finished";
 }

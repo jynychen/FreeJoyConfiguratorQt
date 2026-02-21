@@ -1,9 +1,13 @@
 #include "pinconfig.h"
 #include "ui_pinconfig.h"
 #include <QLabel>
-
-#include "global.h"
 #include <QSettings>
+#include "pinscontrlite.h"
+#include "pinsbluepill.h"
+#include "pintypehelper.h"
+#include "global.h"
+
+// todo: change "int pinNumber" to enum Pin
 
 PinConfig::PinConfig(QWidget *parent) :         // пины - первое, что я начал кодить в конфигураторе и спустя время
     QWidget(parent),                            // заявляю - это говнокод!1 который даже мне тяжело понять
@@ -64,6 +68,8 @@ PinConfig::PinConfig(QWidget *parent) :         // пины - первое, чт
             this, &PinConfig::totalLEDsValueChanged);
     connect(ui->widget_currConfig, &CurrentConfig::limitReached,
             this, &PinConfig::limitReached);
+    connect(ui->widget_PinTypeHelper, &PinTypeHelper::helpHovered,
+            this, &PinConfig::highlightPins);
 }
 
 PinConfig::~PinConfig()
@@ -157,6 +163,9 @@ void PinConfig::pinIndexChanged(int currentDeviceEnum, int previousDeviceEnum, i
 
     // block or reset PWM on PA_8 if selected SPI
     blockPA8PWM(currentDeviceEnum, previousDeviceEnum);
+
+    // PA10 RGB should only works if PA8 PWM or FastEncoder is not selected
+    blockPA10RGB(currentDeviceEnum, previousDeviceEnum, pinNumber);
 }
 
 
@@ -196,9 +205,21 @@ void PinConfig::signalsForWidgets(int currentDeviceEnum, int previousDeviceEnum,
     }
     // I2C selected
     if (currentDeviceEnum == I2C_SCL){// || current_device_enum == I2C_SDA){
-        emit axesSourceChanged(-2, pinName, true);                                            // -2 enum I2C in axes.h
+        emit axesSourceChanged(SOURCE_I2C, pinName, true);
     } else if (previousDeviceEnum == I2C_SCL){// || previous_device_enum == I2C_SDA){
-        emit axesSourceChanged(-2, pinName, false);
+        emit axesSourceChanged(SOURCE_I2C, pinName, false);
+    }
+    // LED PWM
+    if (currentDeviceEnum == LED_PWM) {
+        emit ledPwmSelected(Pin(pinNumber), true);
+    } else if (previousDeviceEnum == LED_PWM) {
+        emit ledPwmSelected(Pin(pinNumber), false);
+    }
+    // LED RGB
+    if (currentDeviceEnum == LED_RGB_WS2812B || currentDeviceEnum == LED_RGB_PL9823) {
+        emit ledRgbSelected(Pin(pinNumber), true);
+    } else if (previousDeviceEnum == LED_RGB_WS2812B || currentDeviceEnum == LED_RGB_PL9823) {
+        emit ledRgbSelected(Pin(pinNumber), false);
     }
 }
 
@@ -312,6 +333,44 @@ void PinConfig::blockPA8PWM(int currentDeviceEnum, int previousDeviceEnum)
     }
 }
 
+// PA10 RGB should only works if PA8 PWM or FastEncoder is not selected
+void PinConfig::blockPA10RGB(int currentDeviceEnum, int previousDeviceEnum, int pinNumber)
+{
+    static int conflictCount = 0;
+    int PA10Index = PA_10 - PA_0;
+
+    if (pinNumber == PA_8 && (currentDeviceEnum == LED_PWM || currentDeviceEnum == FAST_ENCODER)) {
+        conflictCount++;
+    } else if (pinNumber == PA_8 && (previousDeviceEnum == LED_PWM || previousDeviceEnum == FAST_ENCODER)) {
+        conflictCount--;
+    }
+
+    if (conflictCount > 0) {
+        if (m_pinCBoxPtrList[PA10Index]->currentDevEnum() == LED_RGB_WS2812B ||
+            m_pinCBoxPtrList[PA10Index]->currentDevEnum() == LED_RGB_PL9823)
+        {
+            m_pinCBoxPtrList[PA10Index]->resetPin();
+        }
+        for (int i = 0; i < m_pinCBoxPtrList[PA10Index]->enumIndex().size(); ++i) {
+            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_WS2812B ||
+                m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_PL9823)
+            {
+                m_pinCBoxPtrList[PA10Index]->setIndexStatus(i, false);
+                break;
+            }
+        }
+    } else {
+        for (int i = 0; i < m_pinCBoxPtrList[PA10Index]->enumIndex().size(); ++i) {
+            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_WS2812B ||
+                m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_PL9823)
+            {
+                m_pinCBoxPtrList[PA10Index]->setIndexStatus(i, true);
+                break;
+            }
+        }
+    }
+}
+
 
 void PinConfig::shiftRegButtonsCountChanged(int count)
 {
@@ -328,6 +387,28 @@ bool PinConfig::limitIsReached()
     return ui->widget_currConfig->limitIsReached();
 }
 
+void PinConfig::highlightPins(pin_t pinType, bool enable)
+{
+    bool i2c = false;
+    if (pinType == I2C_SDA) i2c = true;
+
+    for (int i = 0; i < m_pinCBoxPtrList.size(); ++i) {
+        for (auto &type: m_pinCBoxPtrList[i]->enumIndex()) {
+            if (type == pinType || (i2c && type == I2C_SCL)) {
+                if (enable) {
+                    QPalette pal(m_pinCBoxPtrList[i]->palette());
+                    pal.setColor(QPalette::Button, pal.highlight().color());
+                    m_pinCBoxPtrList[i]->setPalette(pal);
+                } else {
+                    // надо именно так, чтобы при смене темы менялся цвет, а не зависал,
+                    // как, например, при использовании qApp->palette()
+                    PinComboBox tmp(1);
+                    m_pinCBoxPtrList[i]->setPalette(tmp.palette());
+                }
+            }
+        }
+    }
+}
 
 void PinConfig::resetAllPins()
 {
@@ -348,4 +429,3 @@ void PinConfig::writeToConfig(){
         m_pinCBoxPtrList[i]->writeToConfig(i);
     }
 }
-

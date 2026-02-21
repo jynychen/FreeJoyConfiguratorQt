@@ -7,43 +7,10 @@
 #include "global.h"
 
 #define PINS_COUNT 30
-#define PIN_TYPE_COUNT 29
+#define PIN_TYPE_COUNT 32
 enum // разделить и вынести отдельно?                 // все структуры в global.h?
 {
-  PA_0 = 1,
-  PA_1,
-  PA_2,
-  PA_3,
-  PA_4,
-  PA_5,
-  PA_6,
-  PA_7,
-  PA_8,
-  PA_9,
-  PA_10,
-  PA_15,
-
-  PB_0,
-  PB_1,
-  PB_3,
-  PB_4,
-  PB_5,
-  PB_6,
-  PB_7,
-  PB_8,
-  PB_9,
-  PB_10,
-  PB_11,
-  PB_12,
-  PB_13,
-  PB_14,
-  PB_15,
-
-  PC_13,
-  PC_14,
-  PC_15,
-
-  ANALOG_IN,
+  ANALOG_IN = 100,
   FAST_ENCODER_PIN,
   LED_PWM_PIN,
 
@@ -179,12 +146,12 @@ private:
         {},
         {}, {}},
 
-        {BUTTON_GND,     tr("Button Gnd"),      // device enum,   ui name   tr(need to translate)
+        {BUTTON_GND,     tr("Button to Gnd"),   // device enum,   ui name   tr(need to translate)
         {ALL},                                  // add to (example: ALL - add to all comboboxes, PA_8 - add to PA_8 combobox
         {},                                     // except pins (example: add to - ALL, except - PA_8 = add everywhere except PA_8)
         {}, {QColor(25, 130, 240)}},            // interaction with pins, style of interaction with other pins // color, background-color, border-color...
 
-        {BUTTON_VCC,     tr("Button Vcc"),
+        {BUTTON_VCC,     tr("Button to Vcc"),
         {ALL},
         {},
         {}, {QColor(170, 170, 0)}},
@@ -279,6 +246,16 @@ private:
         {},
         {}, {QColor(200, 90, 70)}},
 
+        {LED_RGB_WS2812B,        tr("LED WS2812b"),
+        {PA_10},
+        {},
+        {}, {QColor(255, 85, 255)}},
+
+        {LED_RGB_PL9823,        tr("LED PL9823"),
+        {PA_10},
+        {},
+        {}, {QColor(230, 65, 230)}},
+
         {AXIS_ANALOG,    tr("Axis Analog"),
         {ANALOG_IN},
         {},
@@ -318,6 +295,11 @@ private:
         {I2C2_SDA},
         {},
         {I2C_SCL}, {QColor(90, 155, 140)}},
+
+        {UART_TX,        tr("UART TX"),
+        {PA_9},
+        {},
+        {}, {QColor(90, 155, 140)}},
     };
 };
 

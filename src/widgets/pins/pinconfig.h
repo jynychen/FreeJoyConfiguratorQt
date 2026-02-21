@@ -4,8 +4,6 @@
 #include <QWidget>
 
 #include "pincombobox.h"
-#include "pinscontrlite.h"
-#include "pinsbluepill.h"
 //#include "currentconfig.h"
 
 QT_BEGIN_NAMESPACE
@@ -14,6 +12,9 @@ QT_END_NAMESPACE
 
 #define SOURCE_COUNT 8
 #define PIN_TYPE_LIMIT_COUNT 3
+
+class PinsBluePill;
+class PinsContrLite;
 
 namespace Ui {
 class PinConfig;
@@ -43,6 +44,9 @@ signals:
     void i2cSelected(bool i2cSelected);
     void axesSourceChanged(int sourceEnum, const QString &sourceName, bool isAdd);
     void limitReached(bool limit);
+    void ledPwmSelected(Pin pin, bool selected);
+    void ledRgbSelected(Pin pin, bool selected);
+    //void pinTypeSelected(Pin pin, pin_types_t type, bool selected);
 
     //protected:
     //    void resizeEvent(QResizeEvent*) override;
@@ -50,6 +54,7 @@ signals:
 public slots:
     void a2bCountChanged(int);
     void shiftRegButtonsCountChanged(int count);
+    void highlightPins(pin_t pinType, bool enable);
 private slots:
     void pinInteraction(int index, int senderIndex, int pin);
     void pinIndexChanged(int currentDeviceEnum, int previousDeviceEnum, int pinNumber, QString pinName);
@@ -76,6 +81,7 @@ private:
     void pinTypeLimit(int currentDeviceEnum, int previousDeviceEnum);
     void setCurrentConfig(int currentDeviceEnum, int previousDeviceEnum, int pinNumber, QString pinName);
     void blockPA8PWM(int currentDeviceEnum, int previousDeviceEnum);
+    void blockPA10RGB(int currentDeviceEnum, int previousDeviceEnum, int pinNumber);
 
     struct source_t
     {

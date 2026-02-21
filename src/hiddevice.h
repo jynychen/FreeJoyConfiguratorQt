@@ -12,6 +12,7 @@ class HidDevice : public QObject
 public:
     void getConfigFromDevice();
     void sendConfigToDevice();
+    void sendLedState(uint32_t bitmask);
 
     bool enterToFlashMode();
     void flashFirmware(const QByteArray *firmware);
@@ -62,6 +63,8 @@ private:
 
     hid_device *m_paramsRead;
     hid_device *m_joyRead;
+
+    uint32_t m_ledState = 0;
 
     int m_selectedDevice = -1;
     int m_currentWork;
