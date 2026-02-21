@@ -20,6 +20,8 @@ public:
 
     int currentButtonSelected() const;
 
+    void updateButtonStyle(bool checked);
+
     void setLedState(bool state);
 
     void readFromConfig();
@@ -27,11 +29,19 @@ public:
 
     void retranslateUi();
 
+    bool isHostControlled() const;
+
+signals:
+    void ledToggled(int ledNumber, bool state);
+
+protected:
+    void changeEvent(QEvent *event) override;
+
 private:
     Ui::LED *ui;
     int m_ledNumber;
 
-    bool m_currentState;
+    bool m_ledCurrentState;
 
     const deviceEnum_guiName_t m_ledList[2] = // порядок обязан быть как в common_types.h!!!!!!!!!!!
     {

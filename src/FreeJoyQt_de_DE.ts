@@ -1313,6 +1313,11 @@
         <translation>Form</translation>
     </message>
     <message>
+        <location filename="widgets/led/led.ui" line="69"/>
+        <source>External</source>
+        <translation>Extern</translation>
+    </message>
+    <message>
         <location filename="widgets/led/led.h" line="38"/>
         <source>Normal</source>
         <translation>Normal</translation>
@@ -1385,40 +1390,45 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="425"/>
+        <location filename="widgets/led/ledconfig.ui" line="405"/>
+        <source>Source</source>
+        <translation>Steuerung</translation>
+    </message>
+    <message>
+        <location filename="widgets/led/ledconfig.ui" line="435"/>
         <source>Timer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="543"/>
-        <location filename="widgets/led/ledconfig.ui" line="628"/>
-        <location filename="widgets/led/ledconfig.ui" line="713"/>
-        <location filename="widgets/led/ledconfig.ui" line="798"/>
+        <location filename="widgets/led/ledconfig.ui" line="553"/>
+        <location filename="widgets/led/ledconfig.ui" line="638"/>
+        <location filename="widgets/led/ledconfig.ui" line="723"/>
+        <location filename="widgets/led/ledconfig.ui" line="808"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="553"/>
+        <location filename="widgets/led/ledconfig.ui" line="563"/>
         <source>Timer 1</source>
         <translation type="unfinished">Timer 1</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="638"/>
+        <location filename="widgets/led/ledconfig.ui" line="648"/>
         <source>Timer 2</source>
         <translation type="unfinished">Timer 2</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="723"/>
+        <location filename="widgets/led/ledconfig.ui" line="733"/>
         <source>Timer 3</source>
         <translation type="unfinished">Timer 3</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="808"/>
+        <location filename="widgets/led/ledconfig.ui" line="818"/>
         <source>Timer 4</source>
         <translation type="unfinished">Timer 4</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="839"/>
+        <location filename="widgets/led/ledconfig.ui" line="849"/>
         <source>RGB LEDs - pin A10</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1437,12 +1447,12 @@
         <translation type="vanished">LED</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="405"/>
+        <location filename="widgets/led/ledconfig.ui" line="415"/>
         <source>Input №</source>
         <translation>Eingabe №</translation>
     </message>
     <message>
-        <location filename="widgets/led/ledconfig.ui" line="415"/>
+        <location filename="widgets/led/ledconfig.ui" line="425"/>
         <source>Function</source>
         <translation>Funktion</translation>
     </message>

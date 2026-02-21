@@ -18,6 +18,8 @@ static const int REPORT_ID_FLASH = 4;
 
 void HidDevice::processData()                   /////// bad code, I'll try to rewrite later
 {
+    // Mutex is used for thread-safe access to m_currentWork and m_ledState 
+    // from both UI and worker threads, as processData() blocks without an event loop.
     const QString FLASHER_PROD_STR ("FreeJoy Flasher");
     const QString FJ_MANUFACT_STR ("FreeJoy");
     const QString OLD_MANUFACT_STR ("STMicroelectronics");
@@ -122,34 +124,54 @@ void HidDevice::processData()                   /////// bad code, I'll try to re
 
     while (m_isFinish == false)
     {
-        if (m_flasherPath.isEmpty()) {
-            // all devices disconnected
-            if (m_hidDevicesList.empty()) {
-                emit deviceDisconnected();
-                oldSelectedDevice = m_selectedDevice = -1;
-                QThread::msleep(600);
-                continue;
+        bool shouldSleep = false;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            if (m_flasherPath.isEmpty()) {
+                // all devices disconnected
+                if (m_hidDevicesList.empty()) {
+                    emit deviceDisconnected();
+                    oldSelectedDevice = m_selectedDevice = -1;
+                    shouldSleep = true;
+                }
             }
+        }
+        if (shouldSleep) {
+            QThread::msleep(600);
+            continue;
+        }
+        if (m_flasherPath.isEmpty()) {
             // open HID
             if (m_selectedDevice != oldSelectedDevice || (deviceCountChanged && m_selectedDevice >= 0)) {
-                std::lock_guard<std::mutex> lock(m_mutex);
-                if (!m_hidDevicesList.empty() && m_selectedDevice < m_hidDevicesList.size()) {  // mutex
-                    const ushort vid = m_hidDevicesList[m_selectedDevice].vid;
-                    const ushort pid = m_hidDevicesList[m_selectedDevice].pid;
-                    const wchar_t *serNum = m_hidDevicesList[m_selectedDevice].serNum.c_str();
-                    const char *path = m_hidDevicesList[m_selectedDevice].path.c_str();
+                std::string path;
+                bool shouldOpen = false;
+                {
+                    std::lock_guard<std::mutex> lock(m_mutex);
+                    if (!m_hidDevicesList.empty() && m_selectedDevice < m_hidDevicesList.size()) {  // mutex
+                        path = m_hidDevicesList[m_selectedDevice].path;
+                        shouldOpen = true;
 
-                    qDebug().nospace()<<"Open HID device №"<<m_selectedDevice + 1
-                                     <<". VID"<<QString::number(vid, 16).toUpper().rightJustified(4, '0')
-                                    <<", PID"<<QString::number(pid, 16).toUpper().rightJustified(4, '0')
-                                   <<", Serial number "<<QString::fromWCharArray(serNum);
-                    m_paramsRead = hid_open_path(path);
+                        const ushort vid = m_hidDevicesList[m_selectedDevice].vid;
+                        const ushort pid = m_hidDevicesList[m_selectedDevice].pid;
+                        const wchar_t *serNum = m_hidDevicesList[m_selectedDevice].serNum.c_str();
+
+                        qDebug().nospace()<<"Open HID device №"<<m_selectedDevice + 1
+                                         <<". VID"<<QString::number(vid, 16).toUpper().rightJustified(4, '0')
+                                        <<", PID"<<QString::number(pid, 16).toUpper().rightJustified(4, '0')
+                                       <<", Serial number "<<QString::fromWCharArray(serNum);
+                    }
+                }
+
+                if (shouldOpen) {
+                    m_paramsRead = hid_open_path(path.c_str());
                     // params hid opened
                     if (m_paramsRead) {
                         ReportConverter::resetReport();
                         emit deviceConnected();
                         oldSelectedDevice = m_selectedDevice;
                         deviceCountChanged = false;
+
+                        std::lock_guard<std::mutex> lock(m_mutex);
                         // for old firmware
                         if (m_deviceNames[m_selectedDevice].first) {
                             m_oldFirmwareSelected = true;
@@ -164,15 +186,20 @@ void HidDevice::processData()                   /////// bad code, I'll try to re
             }
             // device connected
             if (m_paramsRead) {
+                int currentWork;
+                {
+                    std::lock_guard<std::mutex> lock(m_mutex);
+                    currentWork = m_currentWork;
+                }
                 // read joy report
-                if (m_currentWork == REPORT_ID_PARAM && !m_oldFirmwareSelected) {
+                if (currentWork == REPORT_ID_PARAM && !m_oldFirmwareSelected) {
                     // send params request
                     if (!paramsTimer.isValid() || paramsTimer.hasExpired(5000)) {
                         hid_write(m_paramsRead, paramsRequest, 2);
                         paramsTimer.start();
                     }
                     // read report
-                    res=hid_read_timeout(m_paramsRead, buffer, BUFFERSIZE,1000);
+                    res=hid_read_timeout(m_paramsRead, buffer, BUFFERSIZE,200);
                     if (res < 0) {
                         hid_close(m_paramsRead);
                         m_paramsRead=nullptr;
@@ -191,26 +218,43 @@ void HidDevice::processData()                   /////// bad code, I'll try to re
                     }
                 }
                 // read config from device
-                else if (m_currentWork == REPORT_ID_CONFIG_IN) {
+                else if (currentWork == REPORT_ID_CONFIG_IN) {
                     readConfigFromDevice(buffer);
                     #ifdef QT_DEBUG
                     gEnv.readFinished = true;
                     #endif
                 }
                 // write config to device
-                else if (m_currentWork == REPORT_ID_CONFIG_OUT) { ////////////// ХУЁВО ПАШЕТ. редко
+                else if (currentWork == REPORT_ID_CONFIG_OUT) { ////////////// ХУЁВО ПАШЕТ. редко
                     writeConfigToDevice(buffer);
                     // disconnect all devices
-                    std::lock_guard<std::mutex> lock(m_mutex);
-                    emit deviceDisconnected();
-                    m_deviceNames.clear();
-                    emit hidDeviceList(m_deviceNames);
-                    m_hidDevicesList.clear();  // mutex
-                    oldSelectedDevice = m_selectedDevice = -1;
+                    {
+                        std::lock_guard<std::mutex> lock(m_mutex);
+                        emit deviceDisconnected();
+                        m_deviceNames.clear();
+                        emit hidDeviceList(m_deviceNames);
+                        m_hidDevicesList.clear();  // mutex
+                        oldSelectedDevice = m_selectedDevice = -1;
+                    }
                     #ifdef QT_DEBUG
                     gEnv.readFinished = false;
                     #endif
                     QThread::msleep(200);
+                }
+                else if (currentWork == REPORT_ID_LED_HOST_CONTROL) {
+                    uint8_t ledBuffer[64] = {0};
+                    uint32_t currentLedState = 0;
+                    {
+                        std::lock_guard<std::mutex> lock(m_mutex);
+                        currentLedState = m_ledState;
+                        m_currentWork = REPORT_ID_PARAM;
+                    }
+                    ledBuffer[0] = REPORT_ID_LED_HOST_CONTROL;
+                    ledBuffer[1] = uint8_t(currentLedState & 0xFF);
+                    ledBuffer[2] = uint8_t((currentLedState >> 8) & 0xFF);
+                    ledBuffer[3] = uint8_t((currentLedState >> 16) & 0xFF);
+                    ledBuffer[4] = uint8_t((currentLedState >> 24) & 0xFF);
+                    hid_write(m_paramsRead, ledBuffer, 64);
                 }
                 else if (m_oldFirmwareSelected) {
                     QThread::msleep(200);
@@ -302,7 +346,10 @@ void HidDevice::readConfigFromDevice(uint8_t *buffer)
                 }
             }
         } else {
-            m_currentWork = REPORT_ID_PARAM;
+            {
+                std::lock_guard<std::mutex> lock(m_mutex);
+                m_currentWork = REPORT_ID_PARAM;
+            }
             emit configReceived(false);
             break;
         }
@@ -315,10 +362,16 @@ void HidDevice::readConfigFromDevice(uint8_t *buffer)
     }
 
     if (report_count == cfg_count) {
-        m_currentWork = REPORT_ID_PARAM;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_currentWork = REPORT_ID_PARAM;
+        }
         emit configReceived(true);
     } else {
-        m_currentWork = REPORT_ID_PARAM;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_currentWork = REPORT_ID_PARAM;
+        }
         emit configReceived(false);
     }
 }
@@ -384,7 +437,10 @@ void HidDevice::writeConfigToDevice(uint8_t *buffer)
                 }
             }
         } else {
-            m_currentWork = REPORT_ID_PARAM;
+            {
+                std::lock_guard<std::mutex> lock(m_mutex);
+                m_currentWork = REPORT_ID_PARAM;
+            }
             emit configSent(false);
             break;
         }
@@ -400,17 +456,26 @@ void HidDevice::writeConfigToDevice(uint8_t *buffer)
                     m_paramsRead=nullptr;
                 } else if (buffer[1] == 0xFE) {
                     qDebug() << "ERROR! Version doesnt match";
-                    m_currentWork = REPORT_ID_PARAM;
+                    {
+                        std::lock_guard<std::mutex> lock(m_mutex);
+                        m_currentWork = REPORT_ID_PARAM;
+                    }
                     emit configSent(false);
                     return;
                 }
             }
         }
-        m_currentWork = REPORT_ID_PARAM;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_currentWork = REPORT_ID_PARAM;
+        }
         emit configSent(true);
     } else {
         qDebug() << "ERROR, not all config sent";
-        m_currentWork = REPORT_ID_PARAM;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_currentWork = REPORT_ID_PARAM;
+        }
         emit configSent(false);
     }
 }
@@ -530,16 +595,26 @@ void HidDevice::flashFirmwareToDevice()
 // button "get config" clicked
 void HidDevice::getConfigFromDevice()
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     m_currentWork = REPORT_ID_CONFIG_IN;
 }
 // button "send config" clicked
 void HidDevice::sendConfigToDevice()
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     m_currentWork = REPORT_ID_CONFIG_OUT;
+}
+
+void HidDevice::sendLedState(uint32_t bitmask)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_ledState = bitmask;
+    m_currentWork = REPORT_ID_LED_HOST_CONTROL;
 }
 // button "flash firmware" clicked
 void HidDevice::flashFirmware(const QByteArray* firmware)
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     m_firmware = firmware; // pointer?
     m_currentWork = REPORT_ID_FIRMWARE;
 }

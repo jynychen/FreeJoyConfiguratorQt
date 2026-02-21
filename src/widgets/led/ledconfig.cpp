@@ -23,6 +23,7 @@ LedConfig::LedConfig(QWidget *parent)
         LED *led = new LED(i, this);
         ui->layoutV_LED->addWidget(led);
         m_ledPtrList.append(led);
+        connect(led, &LED::ledToggled, this, &LedConfig::onLedToggled);
         led->hide();
     }
     for (int i = 0; i < MAX_AXIS_NUM; ++i) {
@@ -99,19 +100,41 @@ void LedConfig::ledRgbSelected(Pin pin, bool selected)
     m_ledsRgb->setEnabled(selected);
 }
 
+void LedConfig::onLedToggled(int ledNumber, bool state)
+{
+    if (ledNumber < 0 || ledNumber >= MAX_LEDS_NUM) return;
+    if (state) {
+        m_hostLedMask |= (1u << ledNumber);
+    } else {
+        m_hostLedMask &= ~(1u << ledNumber);
+    }
+
+    emit hostLedMaskChanged(m_hostLedMask);
+}
+
 void LedConfig::setLedsState()
 {
-    for (int i = 0; i < m_ledPtrList.size(); ++i) // можно улучшить
+    for (int i = 0; i < MAX_LEDS_NUM; ++i)
     {
-        if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {
-            // logical buttons state
-            int index = gEnv.pDeviceConfig->config.leds[i].input_num / 8;
-            int bit = gEnv.pDeviceConfig->config.leds[i].input_num - index * 8;
+        if (i >= m_ledPtrList.size() || m_ledPtrList[i]->isHidden()) {
+            break;
+        }
 
-            if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07)))) {
-                m_ledPtrList[i]->setLedState(true);
-            } else if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07))) == false) {
-                m_ledPtrList[i]->setLedState(false);
+        if (gEnv.pDeviceConfig->config.leds[i].input_num == SOURCE_HOST) {
+            // Do not override host-controlled LEDs here; their state is managed via UI toggles and device echoes
+            continue;
+        }
+        else if (gEnv.pDeviceConfig->config.leds[i].input_num > -1) {
+            if (m_ledPtrList[i]->currentButtonSelected() == gEnv.pDeviceConfig->config.leds[i].input_num) {
+                // logical buttons state
+                int index = gEnv.pDeviceConfig->config.leds[i].input_num / 8;
+                int bit = gEnv.pDeviceConfig->config.leds[i].input_num - index * 8;
+
+                if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07)))) {
+                    m_ledPtrList[i]->setLedState(true);
+                } else if ((gEnv.pDeviceConfig->paramsReport.log_button_data[index] & (1 << (bit & 0x07))) == false) {
+                    m_ledPtrList[i]->setLedState(false);
+                }
             }
         }
     }

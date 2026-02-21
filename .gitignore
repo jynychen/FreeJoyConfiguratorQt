@@ -4,3 +4,4 @@
 *.pro.user.*
 FreeJoyQt.pro.user
 .vscode
+/build

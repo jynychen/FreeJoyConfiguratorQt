@@ -83,6 +83,7 @@ typedef struct
 
 enum
 {
+    SOURCE_HOST = -4,
     SOURCE_ENCODER = -3,
     SOURCE_I2C = -2,
     SOURCE_NO = -1,
