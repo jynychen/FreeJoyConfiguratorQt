@@ -25,6 +25,7 @@ public:
 public slots:
     void itemClicked(QListWidgetItem *item);
     void setColorToSelectedItems(const QColor &color);
+    void updateLedsButtonState();
 
 private slots:
     void on_radioButton_staticColor_clicked(bool checked);
@@ -33,6 +34,8 @@ private slots:
     void on_radioButton_flow_clicked(bool checked);
 
     void on_spinBox_ledsCount_valueChanged(int value);
+
+    void contextMenu(const QPoint &pos);
 
 private:
     Ui::LedRGBConfig *ui;

@@ -216,9 +216,9 @@ void PinConfig::signalsForWidgets(int currentDeviceEnum, int previousDeviceEnum,
         emit ledPwmSelected(Pin(pinNumber), false);
     }
     // LED RGB
-    if (currentDeviceEnum == LED_RGB) {
+    if (currentDeviceEnum == LED_RGB_WS2812B || currentDeviceEnum == LED_RGB_PL9823) {
         emit ledRgbSelected(Pin(pinNumber), true);
-    } else if (previousDeviceEnum == LED_RGB) {
+    } else if (previousDeviceEnum == LED_RGB_WS2812B || currentDeviceEnum == LED_RGB_PL9823) {
         emit ledRgbSelected(Pin(pinNumber), false);
     }
 }
@@ -346,11 +346,14 @@ void PinConfig::blockPA10RGB(int currentDeviceEnum, int previousDeviceEnum, int 
     }
 
     if (conflictCount > 0) {
-        if (m_pinCBoxPtrList[PA10Index]->currentDevEnum() == LED_RGB) {
+        if (m_pinCBoxPtrList[PA10Index]->currentDevEnum() == LED_RGB_WS2812B ||
+            m_pinCBoxPtrList[PA10Index]->currentDevEnum() == LED_RGB_PL9823)
+        {
             m_pinCBoxPtrList[PA10Index]->resetPin();
         }
         for (int i = 0; i < m_pinCBoxPtrList[PA10Index]->enumIndex().size(); ++i) {
-            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB)
+            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_WS2812B ||
+                m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_PL9823)
             {
                 m_pinCBoxPtrList[PA10Index]->setIndexStatus(i, false);
                 break;
@@ -358,7 +361,8 @@ void PinConfig::blockPA10RGB(int currentDeviceEnum, int previousDeviceEnum, int 
         }
     } else {
         for (int i = 0; i < m_pinCBoxPtrList[PA10Index]->enumIndex().size(); ++i) {
-            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB)
+            if (m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_WS2812B ||
+                m_pinCBoxPtrList[PA10Index]->enumIndex()[i] == LED_RGB_PL9823)
             {
                 m_pinCBoxPtrList[PA10Index]->setIndexStatus(i, true);
                 break;

@@ -138,6 +138,8 @@ void LedConfig::setLedsState()
             }
         }
     }
+
+    m_ledsRgb->updateLedsButtonState();
 }
 
 void LedConfig::setEnabledTimers(bool enabled)

@@ -196,7 +196,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // set theme
     gEnv.pAppSettings->beginGroup("StyleSettings");
-    QString style = gEnv.pAppSettings->value("StyleSheet", "default").toString();
+    QString style = gEnv.pAppSettings->value("StyleSheet", "dark").toString();
     gEnv.pAppSettings->endGroup();
     if (style == "dark") {
         themeChanged(true);

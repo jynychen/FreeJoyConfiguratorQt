@@ -26,16 +26,33 @@ public:
     QString text() const;
     void setText(const QString &text);
 
+    void setButtonNumber(int num);
+    int buttonNumber() const;
+
+    void setButtonInverted(bool inverted);
+    int buttonInverted() const;
+
+    void setButtonState(bool state);
+
 signals:
     //void ledSelected();
 
 private:
     int m_number;
+    bool m_buttonInverted;
+    bool m_buttonState;
+
     QColor m_color;
+    void updateLedColor();
+
     //QScopedPointer<QListWidgetItem> m_item;
     QListWidgetItem *m_item;
 
+    // optimization
     static const QIcon m_baseIcon;
+
+    static const QString m_buttonOffPixPath;
+    static const QString m_buttonOnPixPath;
 };
 
 #endif // LEDRGB_H
