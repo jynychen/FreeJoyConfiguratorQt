@@ -2,7 +2,6 @@
 #include <QPainter>
 #include <QIcon>
 
-const QIcon LedRGB::m_baseIcon = QIcon("://Images/rgbButtonOff.png");
 const QString LedRGB::m_buttonOffPixPath = QString("://Images/rgbButtonOff.png");
 const QString LedRGB::m_buttonOnPixPath = QString("://Images/rgbButtonOn.png");
 
@@ -46,12 +45,19 @@ LedRGB::LedRGB(QObject *parent)
     , m_buttonState(false)
     , m_item(new QListWidgetItem)
 {
-    m_item->setIcon(m_baseIcon);
+    m_item->setIcon(baseIcon());
 }
 
 LedRGB::~LedRGB()
 {
     //delete m_item;
+}
+
+
+QIcon LedRGB::baseIcon()
+{
+    static QIcon icon("://Images/rgbButtonOff.png");
+    return icon;
 }
 
 
@@ -102,7 +108,7 @@ void LedRGB::setButtonState(bool state)
 // зачем?
 QIcon LedRGB::icon() const
 {
-    return m_baseIcon;
+    return baseIcon();
 }
 // зачем?
 void LedRGB::setIcon(const QIcon &icon, const QColor &color)

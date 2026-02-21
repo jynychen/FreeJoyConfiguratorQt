@@ -153,19 +153,19 @@
   <customwidget>
    <class>ColorWheel</class>
    <extends>QWidget</extends>
-   <header>widgets\color\colorwheel.h</header>
+   <header>widgets/color/colorwheel.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ColorValueSlider</class>
    <extends>QWidget</extends>
-   <header>widgets\color\colorvalueslider.h</header>
+   <header>widgets/color/colorvalueslider.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ColorCells</class>
    <extends>QWidget</extends>
-   <header>widgets\color\colorcells.h</header>
+   <header>widgets/color/colorcells.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

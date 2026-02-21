@@ -1,5 +1,5 @@
 #include "colorpicker.h"
-#include "ui_ColorPicker.h"
+#include "ui_colorpicker.h"
 
 #include <QColorDialog>
 #include <QLabel>

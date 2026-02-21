@@ -48,6 +48,7 @@
 #include <QDrag>
 #include <QApplication>
 #include <QLayout>
+#include <cmath>
 
 //#define DRAG_AND_NDROP
 

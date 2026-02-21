@@ -49,7 +49,7 @@ private:
     QListWidgetItem *m_item;
 
     // optimization
-    static const QIcon m_baseIcon;
+    static QIcon baseIcon();
 
     static const QString m_buttonOffPixPath;
     static const QString m_buttonOnPixPath;
